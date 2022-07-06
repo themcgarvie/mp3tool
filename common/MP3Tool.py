@@ -101,12 +101,6 @@ class MP3Tool:
         f_song = os.path.basename(self.MP3ToolOptions.song).replace(
             " ", "_").replace(".mp3", "")
 
-        # Get bitrate of song
-        if "bit_rate" in mp3Info:
-            self.bitrate = mp3Info['bit_rate']
-        else:
-            self.bitrate = 128000
-
         # Determine the base output file name, based on ID3 tag info
         if self.MP3ToolOptions.custom_output_file != None:
             self.output_file = self.MP3ToolOptions.custom_output_file
@@ -173,12 +167,10 @@ class MP3Tool:
             file_reveal = self.MP3ToolOptions.output_folder + self.output_file + "_Reveal.mp3"
             song_reversed_with_fade.export(
                 file_clip,
-                format="mp3",
-                bitrate=self.bitrate)
+                format="mp3")
             song_reveal.export(
                 file_reveal,
-                format="mp3",
-                bitrate=self.bitrate)
+                format="mp3")
             print(f"Clip: {file_clip}")
             print(f"Reveal: {file_reveal}")
         except Exception as e:
@@ -227,12 +219,10 @@ class MP3Tool:
             file_reveal = self.MP3ToolOptions.output_folder + self.output_file + "_Reveal.mp3"
             song_intro.export(
                 file_clip,
-                format="mp3",
-                bitrate=self.bitrate)
+                format="mp3")
             song_reveal.export(
                 file_reveal,
-                format="mp3",
-                bitrate=self.bitrate)
+                format="mp3")
             print(f"Clip: {file_clip}")
             print(f"Reveal: {file_reveal}")
         except Exception as e:
@@ -289,12 +279,10 @@ class MP3Tool:
             file_reveal = self.MP3ToolOptions.output_folder + self.output_file + "_Reveal.mp3"
             speed_change_song.export(
                 file_clip,
-                format="mp3",
-                bitrate=self.bitrate)
+                format="mp3")
             song_reveal.export(
                 file_reveal,
-                format="mp3",
-                bitrate=self.bitrate)
+                format="mp3")
             print(f"Clip: {file_clip}")
             print(f"Reveal: {file_reveal}")
         except Exception as e:
