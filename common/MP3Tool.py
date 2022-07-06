@@ -19,10 +19,8 @@
 """
 
 
-from calendar import c
 import os
 import random
-from stat import S_ISBLK
 from mutagen.easyid3 import EasyID3
 from mutagen.mp3 import MP3
 from pydub import AudioSegment

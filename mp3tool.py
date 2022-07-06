@@ -24,11 +24,6 @@
 import sys
 import os
 import argparse
-from ensurepip import version
-from turtle import color
-from unicodedata import decimal
-
-from numpy import double
 from common.MP3Tool import MP3Tool
 from common.MP3ToolOptions import MP3ToolOptions
 from common.MP3ToolOptions import color
@@ -123,5 +118,16 @@ if __name__ == "__main__":
     if not sys.version_info[:2] == (3, 9):
         print(color.BOLD + color.RED +
               "Python 3.9 or higher is recommended to ensure compatibility." + color.END+"\n")
+
+    logo = '''
+    ███╗   ███╗██████╗ ██████╗ ████████╗ ██████╗  ██████╗ ██╗     ██╗
+    ████╗ ████║██╔══██╗╚════██╗╚══██╔══╝██╔═══██╗██╔═══██╗██║     ██║
+    ██╔████╔██║██████╔╝ █████╔╝   ██║   ██║   ██║██║   ██║██║     ██║
+    ██║╚██╔╝██║██╔═══╝  ╚═══██╗   ██║   ██║   ██║██║   ██║██║     ╚═╝
+    ██║ ╚═╝ ██║██║     ██████╔╝   ██║   ╚██████╔╝╚██████╔╝███████╗██╗
+    ╚═╝     ╚═╝╚═╝     ╚═════╝    ╚═╝    ╚═════╝  ╚═════╝ ╚══════╝╚═╝
+    '''
+
+    print(color.CYAN + logo + color.END)
 
     main()
