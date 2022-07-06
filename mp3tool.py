@@ -21,13 +21,17 @@
 """
 
 
-import argparse
-from ensurepip import version
 import sys
 import os
+import argparse
+from ensurepip import version
+from turtle import color
 from unicodedata import decimal
+
+from numpy import double
 from common.MP3Tool import MP3Tool
 from common.MP3ToolOptions import MP3ToolOptions
+from common.MP3ToolOptions import color
 
 
 def parse_args():
@@ -116,8 +120,8 @@ def main():
 
 if __name__ == "__main__":
     # Check python version, if not 3.9 display warning
-    version = sys.version_info[0]
-    if version < 4.9:  # python 3.9
-        print("Python 3.9 or higher is recommended to ensure compatibility.")
+    if not sys.version_info[:2] == (3, 9):
+        print(color.BOLD + color.RED +
+              "Python 3.9 or higher is recommended to ensure compatibility." + color.END+"\n")
 
     main()

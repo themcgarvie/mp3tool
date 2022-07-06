@@ -19,14 +19,16 @@
 """
 
 
-from stat import S_ISBLK
-from common import Utils
+from calendar import c
 import os
 import random
+from stat import S_ISBLK
 from mutagen.easyid3 import EasyID3
 from mutagen.mp3 import MP3
 from pydub import AudioSegment
 from pydub.utils import mediainfo
+from common import Utils
+from common.MP3ToolOptions import color
 
 
 class MP3Tool:
@@ -49,16 +51,19 @@ class MP3Tool:
 
     def determineSong(self):
         if self.MP3ToolOptions.song is None:
-            print("Selecting a random input file!")
+            print("Input file:\t\t" + color.BOLD + "Random!!!" + color.END)
             allMp3s = Utils.findFiles(
                 '*.mp3', self.MP3ToolOptions.source_folder)
             allMp3s_sample = random.sample(allMp3s, 1)
             self.MP3ToolOptions.song = allMp3s_sample[0]
         else:
-            print(f"Using specified input file: {self.MP3ToolOptions.song}")
+            print("Input file:\t\t" + color.BOLD +
+                  f"{self.MP3ToolOptions.song}" + color.END)
+
             self.MP3ToolOptions.song = self.MP3ToolOptions.source_folder+self.MP3ToolOptions.song
 
-        print(f"File Selected: {self.MP3ToolOptions.song}")
+        print("File Selected:\t\t" + color.BOLD +
+              f"{self.MP3ToolOptions.song}" + color.END)
 
     def determineMediaInfo(self):
         # Read song file
@@ -114,8 +119,10 @@ class MP3Tool:
             self.output_file = self.song_base_name.replace(" ", "_").replace(
                 "/", "-").replace("\"", "").replace("\"", "").replace("'", "")
 
-        print(f"Output Folder: {self.MP3ToolOptions.output_folder}")
-        print(f"Output File Base Name: {self.output_file}")
+        print("Output Folder:\t\t" + color.BOLD +
+              f"{self.MP3ToolOptions.output_folder}" + color.END)
+        print("Output File Base Name:\t" + color.BOLD +
+              f"{self.output_file}" + color.END)
 
     def setMediaInfo(self, song, clip_type, clip_method):
         # Create Tags object
@@ -129,7 +136,8 @@ class MP3Tool:
 
     def songReverse(self):
         # Determine the song, if not specified in the command line (--song) a random song will be selected
-        print("Create reverse intro/clip from selected song.")
+        print(color.BOLD + color.GREEN +
+              "Create reverse intro/clip from selected song." + color.END + "\n")
         self.MP3ToolOptions.output_folder = "output\\backwards\\"
         self.determineSong()
         self.determineMediaInfo()
@@ -139,8 +147,8 @@ class MP3Tool:
         duration_clip = Utils.durationInMs(self.MP3ToolOptions.duration)
         reveal_start = Utils.getMsTime("0:00:15")
         reveal_end = Utils.getMsTime("0:00:45")
-        print(f"Duration: {self.MP3ToolOptions.duration} seconds")
-        print(f"Fade: {fade_time} ms")
+        print("Duration:\t\t" + color.BOLD +
+              f"{self.MP3ToolOptions.duration} seconds" + color.END)
 
         # Read song file
         try:
@@ -171,8 +179,8 @@ class MP3Tool:
             song_reveal.export(
                 file_reveal,
                 format="mp3")
-            print(f"Clip: {file_clip}")
-            print(f"Reveal: {file_reveal}")
+            print("Clip:\t\t\t" + color.BOLD + f"{file_clip}" + color.END)
+            print("Reveal:\t\t\t" + color.BOLD + f"{file_reveal}" + color.END)
         except Exception as e:
             print("Problem with output file(s), aborted.")
             print(e)
@@ -183,7 +191,8 @@ class MP3Tool:
 
     def songIntro(self):
         # Determine the song, if not specified in the command line (--song) a random song will be selected
-        print("Create intro/clip from selected song.")
+        print(color.BOLD + color.GREEN +
+              "Create intro/clip from selected song." + color.END + "\n")
         self.MP3ToolOptions.output_folder = "output\\intro\\"
         self.determineSong()
         self.determineMediaInfo()
@@ -193,8 +202,8 @@ class MP3Tool:
         duration_clip = Utils.durationInMs(self.MP3ToolOptions.duration)
         reveal_start = Utils.getMsTime("0:00:15")
         reveal_end = Utils.getMsTime("0:00:45")
-        print(f"Duration: {self.MP3ToolOptions.duration} seconds")
-        print(f"Fade: {fade_time} ms")
+        print("Duration:\t\t" + color.BOLD +
+              f"{self.MP3ToolOptions.duration} seconds" + color.END)
 
         # Read song file
         try:
@@ -223,8 +232,8 @@ class MP3Tool:
             song_reveal.export(
                 file_reveal,
                 format="mp3")
-            print(f"Clip: {file_clip}")
-            print(f"Reveal: {file_reveal}")
+            print("Clip:\t\t\t" + color.BOLD + f"{file_clip}" + color.END)
+            print("Reveal:\t\t\t" + color.BOLD + f"{file_reveal}" + color.END)
         except Exception as e:
             print("Problem with output file(s), aborted.")
             print(e)
@@ -234,7 +243,9 @@ class MP3Tool:
         self.setMediaInfo(file_reveal, 'REVEAL', 'Intro')
 
     def songSpeedChange(self):
-        print("Create fast clip from selected song.")
+        # Determine the song, if not specified in the command line (--song) a random song will be selected
+        print(color.BOLD + color.GREEN +
+              "Create fast or slow clip from selected song." + color.END + "\n")
         self.MP3ToolOptions.output_folder = "output\\speedchange\\"
         self.determineSong()
         self.determineMediaInfo()
@@ -247,10 +258,10 @@ class MP3Tool:
             duration_clip = Utils.durationInMs(self.MP3ToolOptions.duration)
         reveal_start = Utils.getMsTime("0:00:15")
         reveal_end = Utils.getMsTime("0:00:45")
-        print(f"Song Speed: {self.MP3ToolOptions.song_speed}")
-        print(f"Duration Modified: {duration_clip} ms")
-        print(f"Duration: {self.MP3ToolOptions.duration} seconds")
-        print(f"Fade: {fade_time} ms")
+        print("Song Speed:\t\t" + color.BOLD +
+              f"{self.MP3ToolOptions.song_speed}" + color.END)
+        print("Duration:\t\t" + color.BOLD +
+              f"{self.MP3ToolOptions.duration} seconds" + color.END)
 
         # Opening file
         try:
@@ -283,8 +294,8 @@ class MP3Tool:
             song_reveal.export(
                 file_reveal,
                 format="mp3")
-            print(f"Clip: {file_clip}")
-            print(f"Reveal: {file_reveal}")
+            print("Clip:\t\t\t" + color.BOLD + f"{file_clip}" + color.END)
+            print("Reveal:\t\t\t" + color.BOLD + f"{file_reveal}" + color.END)
         except Exception as e:
             print("Problem with output file(s), aborted.")
             print(e)
@@ -294,7 +305,8 @@ class MP3Tool:
         self.setMediaInfo(file_reveal, 'REVEAL', 'Speed Change')
 
     def songMix(self):
-        print(f"Create mix from {self.MP3ToolOptions.mixes} random MP3s!")
+        print(color.BOLD + color.GREEN +
+              f"Create mix from {self.MP3ToolOptions.mixes} random MP3s!" + color.END + "\n")
 
         # Get 3 random MP3s
         self.MP3ToolOptions.output_folder = "output\\mix\\"
@@ -316,12 +328,10 @@ class MP3Tool:
             if self.MP3ToolOptions.custom_output_file != None:
                 self.MP3ToolOptions.outputFile = self.MP3ToolOptions.custom_output_file
 
-            print(
-                f"\nCombining\n... Song 1: '{self.MP3ToolOptions.song1}'")
-            print(
-                f"... Song 2: '{self.MP3ToolOptions.song2}'")
-            print(
-                f"... Result File: '{self.MP3ToolOptions.outputFile}'")
+            print("Song 1:\t\t" + color.BOLD +
+                  f"{self.MP3ToolOptions.song1}" + color.END)
+            print("Song 2:\t\t" + color.BOLD +
+                  f"{self.MP3ToolOptions.song2}" + color.END)
 
         else:
             # Mix 3 songs...
@@ -341,14 +351,12 @@ class MP3Tool:
             if self.MP3ToolOptions.custom_output_file != None:
                 self.MP3ToolOptions.outputFile = self.MP3ToolOptions.custom_output_file
 
-            print(
-                f"\nCombining\n... Song 1: '{self.MP3ToolOptions.song1}'")
-            print(
-                f"... Song 2: '{self.MP3ToolOptions.song2}'")
-            print(
-                f"... Song 3: '{self.MP3ToolOptions.song3}'")
-            print(
-                f"... Result File: '{self.MP3ToolOptions.outputFile}'")
+            print("Song 1:\t\t" + color.BOLD +
+                  f"{self.MP3ToolOptions.song1}" + color.END)
+            print("Song 2:\t\t" + color.BOLD +
+                  f"{self.MP3ToolOptions.song2}" + color.END)
+            print("Song 3:\t\t" + color.BOLD +
+                  f"{self.MP3ToolOptions.song3}" + color.END)
 
         # Opening file
         try:
@@ -406,14 +414,15 @@ class MP3Tool:
             else:
                 played_together2.export(
                     file_mix, format="mp3", bitrate=original_bitrate)
-            print(f"Mix File: {file_mix}")
+            print("Mix File:\t" + color.BOLD + f"{file_mix}" + color.END)
         except Exception as e:
             print("Problem creating output file, aborted.")
             print(e)
             exit(1)
 
     def songMixSelected(self):
-        print(f"Create mix from {self.MP3ToolOptions.mixes} MP3s!")
+        print(color.BOLD + color.GREEN +
+              f"Create mix from {self.MP3ToolOptions.mixes} MP3s!" + color.END + "\n")
         self.MP3ToolOptions.output_folder = "output\\mix\\"
 
         # How many songs are we mixing?
@@ -433,12 +442,10 @@ class MP3Tool:
                 " ", "_").replace(".mp3", "")
             self.MP3ToolOptions.outputFile = f_song1 + "--" + f_song2 + ".mp3"
 
-            print(
-                f"Combining\n... Song 1: '{self.MP3ToolOptions.song1}'")
-            print(
-                f"... Song 2: '{self.MP3ToolOptions.song2}'")
-            print(
-                f"... Result File: '{self.MP3ToolOptions.outputFile}'")
+            print("Song 1:\t\t" + color.BOLD +
+                  f"{self.MP3ToolOptions.song1}" + color.END)
+            print("Song 2:\t\t" + color.BOLD +
+                  f"{self.MP3ToolOptions.song2}" + color.END)
 
         else:
             # Mix 3 songs...
@@ -451,14 +458,12 @@ class MP3Tool:
             self.MP3ToolOptions.outputFile = f_song1 + \
                 "--" + f_song2 + "--" + f_song3 + ".mp3"
 
-            print(
-                f"Combining\n... Song 1: '{self.MP3ToolOptions.song1}'")
-            print(
-                f"... Song 2: '{self.MP3ToolOptions.song2}'")
-            print(
-                f"... Song 3: '{self.MP3ToolOptions.song3}'")
-            print(
-                f"... Result File: '{self.MP3ToolOptions.outputFile}'")
+            print("Song 1:\t\t" + color.BOLD +
+                  f"{self.MP3ToolOptions.song1}" + color.END)
+            print("Song 2:\t\t" + color.BOLD +
+                  f"{self.MP3ToolOptions.song2}" + color.END)
+            print("Song 3:\t\t" + color.BOLD +
+                  f"{self.MP3ToolOptions.song3}" + color.END)
 
         # Opening file
         try:
@@ -517,7 +522,7 @@ class MP3Tool:
             else:
                 played_together2.export(self.MP3ToolOptions.output_folder +
                                         self.MP3ToolOptions.outputFile, format="mp3", bitrate=original_bitrate)
-            print(f"Mix File: {file_mix}")
+            print("Mix File:\t" + color.BOLD + f"{file_mix}" + color.END)
         except Exception as e:
             print("Problem creating output file, aborted.")
             print(e)
